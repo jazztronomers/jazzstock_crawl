@@ -1,0 +1,7 @@
+.ipynb_checkpoints
+__pycache__
+*.pyc
+log/*.log
+*.log
+config.py
+simulation/result/
