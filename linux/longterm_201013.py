@@ -107,7 +107,7 @@ FROM
 ) RS
 
 WHERE SHARE IS NOT NULL
-AND RS.CNT=0
+AND RS.CNT=56
 
 
 ;
@@ -156,14 +156,12 @@ codeDic = {}
 
 start = dt.now()
 todaydate = gettoday()
-#todaydate = '2020-10-13'
+todaydate = '2020-09-28'
 
 db_readAll(todaydate)
-for i, eachCode in enumerate(codeDic.keys()):
+for i, eachCode in enumerate(list(codeDic.keys())):
 
-    try:
+    
         analysisSndBasicEachDay(eachCode, todaydate)
         if (i % 10 == 0):
             print(i, todaydate, eachCode, dt.now() - start)
-    except:
-        print('error', todaydate, eachCode, )

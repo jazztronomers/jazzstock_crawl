@@ -8,15 +8,16 @@ from datetime import datetime as dt
 from lxml import html
 
 
-    
+
+headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'}
 today = dt.now().date()
 
 
 def crawl_stake_info(code):
     
-    global today
+    global today, headers
     url = "http://companyinfo.stock.naver.com/v1/company/c1010001.aspx?cmp_cd=%s&target=finsum_more" %(code)
-    html = requests.get(url).text
+    html = requests.get(url, headers=headers).text
 
     try:
         df_list = pd.read_html(html)#, index_col='주요재무정보')
@@ -55,10 +56,10 @@ def crawl_stake_info(code):
 
 def crawl_ohlc(code):
     
-    global today
+    global today, headers
     url = "https://finance.naver.com/item/coinfo.nhn?code=%s" % (code)
 
-    page = requests.get(url).content.decode('euc-kr', 'ignore')
+    page = requests.get(url, headers=headers).content.decode('euc-kr', 'ignore')
     tree = html.fromstring(page)
 
     obj = tree.xpath('//dl[@class="blind"]//text()')
@@ -130,8 +131,11 @@ if __name__ == '__main__':
         
         
         for j, each_query in enumerate(query_to_execute):
-            # print(j, each_query)
-            db.insert(each_query)
+            try:
+                db.insert(each_query)
+            except Exception as e:
+                print(i, stockcode, j, e, each_query)
+	
         
         time.sleep(0.2)
         

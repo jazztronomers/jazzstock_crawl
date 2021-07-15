@@ -5,14 +5,17 @@ option=$1
 
 MARKETOPEN=`python3 /workspace/jazzstock_crawl/market_open.py`
 
-if [ "$MARKETOPEN" = "False" ] && [ "$option" != "k" ]; then
+if [ "$MARKETOPEN" = "False" ] && [ "$option" != "m" ]; then
 
     echo "MARKET CLOSED"
 
 else
 
+    if [ "$option" != "m" ]; then
 
-    sleep 2400 # 40MIN
+        sleep 2400 # 40MIN
+      
+    fi
 
 
 
@@ -43,6 +46,9 @@ else
 
     timeout 200 ssh Administrator@astronomers.cafe24.com python -u c://workspace/jazzstock_crawl/windows/date_idx_update.py
     sleep 2
+    timeout 200 ssh Administrator@astronomers.cafe24.com python -u c://workspace/jazzstock_crawl/windows/crawl_hankyung.py
+    
+    python3 -u /workspace/jazzstock_crawl/telegram_alert.py "WINDOWS CRAWL_SND END"
 
     # # ==========================================================================================================================
     # # CRAWL_WINDOWS_KIWOOM_OHLC_MIN

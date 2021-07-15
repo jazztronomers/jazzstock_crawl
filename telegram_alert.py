@@ -20,6 +20,12 @@ def send_message_telegram(message_dic='TEST'):
     print(message_dic)
     _BOT.sendMessage(_RECEIVER, '%s' % (message_dic))
     
+def send_image_telegram(image_path):
+    _BOT.sendPhoto(_RECEIVER, photo=open(image_path, 'rb'))
+    
 if __name__=='__main__':
     
-    send_message_telegram(sys.argv[1])
+    if len(sys.argv) == 1:
+        send_image_telegram('profileImage.png')
+    else:
+        send_message_telegram(sys.argv[1])

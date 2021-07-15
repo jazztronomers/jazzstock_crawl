@@ -1,7 +1,7 @@
 from jazzstock_bot.common import connector_db as db
 import pandas as pd
 import time
-
+import sys
 
 
 def db_readAll():
@@ -32,8 +32,8 @@ def makebb(stockcode, day):
     JOIN jazzdb.T_DATE_INDEXED USING (DATE)
     WHERE 1=1
     AND STOCKCODE = '%s'
-    # AND DATE > '2018-05-01'
-    AND CNT<25
+    AND DATE > '2020-08-01'
+    # AND CNT<25i
 
     ''' % (stockcode))
 
@@ -72,7 +72,13 @@ def gettoday():
     
 codeDic, itemDic = {}, {}
 db_readAll()
-today = gettoday()
+
+if len(sys.argv)> 1:
+    today = sys.argv[1]
+else:
+    today = gettoday()
+
+print(today)
 
 if __name__ == '__main__':
 

@@ -27,7 +27,7 @@ def db_readAll(dt):
     print("[INFO] 종목명/종목코드를 메모리에 읽어왔습니다, 남은 종목 수: ", len(itemDic.keys()))
     
     
-def insert_movingaverage(stockcode):
+def insert_movingaverage(stockcode, date):
     
     query = '''
 
@@ -53,20 +53,19 @@ def insert_movingaverage(stockcode):
         FROM jazzdb.T_STOCK_SND_DAY A
         JOIN jazzdb.T_DATE_INDEXED B USING (DATE)
         WHERE 1=1
-        AND B.CNT < 150
+        AND B.CNT < 200
         AND A.STOCKCODE = '%s'
         ) RS
-        WHERE RS.CNT in (0)
+        WHERE RS.DATE ='%s'
 
 
-
-            ''' %(stockcode)
+            ''' %(stockcode, date)
     
     try:
         db.insert(query)
         # print('MA SUCCESS', i,stockcode,codeDic[stockcode])
-    except:
-        print('ERROR', i,stockcode, codeDic[stockcode])
+    except Exception as e:
+        print('ERROR', i,stockcode, codeDic[stockcode], e)
     
 def gettoday():
     td = db.selectSingleValue('SELECT cast(DATE AS CHAR) AS DATE FROM jazzdb.T_DATE_INDEXED WHERE CNT = 0')
@@ -84,4 +83,4 @@ db_readAll(todaydate)
 
 
 for i,eachcode in enumerate(codeDic.keys()):
-    insert_movingaverage(eachcode)
+    insert_movingaverage(eachcode, todaydate)
