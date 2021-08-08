@@ -131,8 +131,6 @@ class Kiwoom(QAxWidget):
 
         if rqname == "opt10001_req":
             self._opt10001(rqname, trcode)
-        elif rqname == "opt10081_req":
-            self._opt10081(rqname, trcode)
         elif rqname == 'opt10078_req':
             self._opt10078(rqname,trcode)
         elif rqname == 'opt10044_req':
@@ -152,6 +150,10 @@ class Kiwoom(QAxWidget):
                 return rt
             except AttributeError:
                 pass
+
+
+        elif rqname == "opt10081_req":
+            self._opt10081(rqname, trcode)
         # =======================================================
 
         elif rqname == 'opt20068_req':
@@ -266,36 +268,6 @@ class Kiwoom(QAxWidget):
         #print("[RESULT]", name,volume)
 
 
-    def _opt10081(self,rqname,trcode):
-
-        data_cnt = self._get_repeat_cnt(trcode, rqname)
-        tempStr = ""
-
-        stockCode = self._comm_get_data(trcode, "", rqname, 0, "종목코드")
-
-        for i in range(data_cnt):
-
-            date = self._comm_get_data(trcode, "", rqname, i, "일자")
-            open = self._comm_get_data(trcode, "", rqname, i, "시가")
-            high = self._comm_get_data(trcode, "", rqname, i, "고가")
-            low = self._comm_get_data(trcode, "", rqname, i, "저가")
-            close = self._comm_get_data(trcode, "", rqname, i, "현재가")
-            volume = self._comm_get_data(trcode, "", rqname, i, "거래량")
-            value = self._comm_get_data(trcode, "", rqname, i, "거래대금")
-            adjustClass = self._comm_get_data(trcode, "", rqname, i, "수정주가구분")
-            adjustRatio = self._comm_get_data(trcode, "", rqname, i, "수정비율")
-            #print(date,open,high,low,close,volume,value)
-
-
-            if(len(adjustClass) == 0):
-                adjustClass = 0
-
-            if len(adjustRatio) == 0 : adjustRatio = -1
-
-
-            tempStr = tempStr + stockCode +'\t' + date +'\t' + open +'\t' + high +'\t' + low +'\t' + close +'\t' + value + '\t' + str(adjustClass) +'\t' + str(adjustRatio) +'\n'
-        # print('sssss', tempStr, data_cnt)
-        writetempFile(tempStr)
 
 
 
@@ -366,8 +338,28 @@ class Kiwoom(QAxWidget):
         else:
             print('WOW~')
 
+    def _opt10081(self, rqname, trcode):
 
+        data_cnt = self._get_repeat_cnt(trcode, rqname)
+        stockcode = self._comm_get_data(trcode, "", rqname, 0, "종목코드")
 
+        df = pd.DataFrame(
+            columns=["STOCKCODE", "DATE", "OPEN", "HIGH", "LOW", "CLOSE", "VOLUME", "VALUE", "ADJUSTCLASS", "ADJUSTRATIO"])
+
+        for i in range(data_cnt):
+            date = self._comm_get_data(trcode, "", rqname, i, "일자")
+            open = self._comm_get_data(trcode, "", rqname, i, "시가")
+            high = self._comm_get_data(trcode, "", rqname, i, "고가")
+            low = self._comm_get_data(trcode, "", rqname, i, "저가")
+            close = self._comm_get_data(trcode, "", rqname, i, "현재가")
+            volume = self._comm_get_data(trcode, "", rqname, i, "거래량")
+            value = self._comm_get_data(trcode, "", rqname, i, "거래대금")
+            adjustClass = self._comm_get_data(trcode, "", rqname, i, "수정주가구분")
+            adjustRatio = self._comm_get_data(trcode, "", rqname, i, "수정비율")
+
+            df.loc[len(df)] = [stockcode, date, open, high, low, close, volume, value, adjustClass, adjustRatio]
+
+        return df
 
     def _opt10044(self,rqname,trcode):
 

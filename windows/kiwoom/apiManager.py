@@ -21,36 +21,13 @@ def writetempFile(tempstr):
     a.close()
 
 # jazzdb.T_STOCK_OHLC_DAY
-def api_getDayChart(apiObj, stockCode, date):
+def api_get_ohlc_day(apiObj, stockCode, date):
     apiObj.set_input_value("종목코드", stockCode)
     apiObj.set_input_value("기준일자", date)
     apiObj.set_input_value("수정주가구분", 1)
-    apiObj.comm_rq_data("opt10081_req", "opt10081", 0, "0101")
+    ret = apiObj.comm_rq_data("opt10081_req", "opt10081", 0, "0101")
 
-    query = '''
-
-        SELECT DATE_FORMAT(DATE,"%%Y%%m%%d") AS DATE
-        FROM jazzdb.T_STOCK_OHLC_DAY
-        WHERE 1=1
-        AND STOCKCODE = '%s'
-
-    ''' % (stockCode)
-
-    datelist = db.selectSingleColumn(query)
-    data = []
-
-    # tempStr = tempStr + stockCode + '\t' + date + '\t' + open + '\t' + high + '\t' + low + '\t' + close + '\t' + value + '\t' + str(adjustClass) + '\t' + str(adjustRatio) + '\n'
-    for eachLine in readTempFile():
-        if eachLine[1] not in datelist:
-            data.append(tuple(eachLine))
-
-    insertQuery = '''
-
-        INSERT INTO jazzdb.T_STOCK_OHLC_DAY
-        VALUES ''' + str(data)[1:-1]
-    db.insert(insertQuery)
-
-    return len(data)
+    return ret
 
 
 
@@ -213,10 +190,14 @@ def api_checkDate(apiObj, date):
     apiObj.set_input_value("종목코드", '079940')
     apiObj.set_input_value("기준일자", date)
     apiObj.set_input_value("수정주가구분", 1)
-    apiObj.comm_rq_data("opt10081_req", "opt10081", 0, "0101")
+    ret = apiObj.comm_rq_data("opt10081_req", "opt10081", 0, "0101")
 
-    workingDateA = readTempFile()[0][1]
-    workingDateB = readTempFile()[1][1]
+    # workingDateA = readTempFile()[0][1]
+    # workingDateB = readTempFile()[1][1]
+
+
+    workingDateA = ret.DATE.values[0]
+    workingDateB = ret.DATE.values[1]
 
     return [workingDateA, workingDateB]
 
