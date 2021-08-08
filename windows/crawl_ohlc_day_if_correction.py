@@ -42,7 +42,7 @@ def get_ohlc_min(stockcode, today):
     else:
         return None
 
-def get_ohlc_min(stockcode, today):
+def get_ohlc_day(stockcode, today):
     ret = am.api_get_ohlc_(apiObj, stockcode)
     if isinstance(ret, pd.DataFrame):
         ret = ret[ret['DATE'] == today]
