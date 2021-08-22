@@ -41,7 +41,7 @@ class StockMovingAverage:
     def get_ohlc(self, cnt=900):
         
         date_from = db.selectSingleValue('SELECT CAST(DATE AS CHAR) AS DATE FROM jazzdb.T_DATE_INDEXED WHERE CNT = "%s"'%(cnt))
-        df = db.selectpd("SELECT STOCKCODE, CAST(DATE AS CHAR) AS DATE, A.OPEN, A.HIGH, A.LOW, A.CLOSE, VOLUME FROM jazzdb.T_STOCK_OHLC_DAY A JOIN jazzdb.T_STOCK_SND_DAY B USING(STOCKCODE, DATE) WHERE STOCKCODE = '%s' AND DATE > '%s'"%(self.stockcode, date_from))
+        df = db.selectpd("SELECT STOCKCODE, CAST(DATE AS CHAR) AS DATE, A.OPEN, A.HIGH, A.LOW, A.CLOSE, B.VOLUME FROM jazzdb.T_STOCK_OHLC_DAY A JOIN jazzdb.T_STOCK_SND_DAY B USING(STOCKCODE, DATE) WHERE STOCKCODE = '%s' AND DATE > '%s'"%(self.stockcode, date_from))
         return df
 
     def _movingaverage_price(self, ipdf, n=[5,20,60,120,240], type = 0):
