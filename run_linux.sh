@@ -22,6 +22,7 @@ else
     python3 -u /workspace/jazzstock_crawl/linux/03.batch_gen_day_smar.py 
     python3 -u /workspace/jazzstock_crawl/linux/02.batch_gen_snd_analysis_shortterm.py &
     python3 -u /workspace/jazzstock_crawl/linux/02.batch_gen_snd_analysis_longterm.py
-    python3 -u /workspace/jazzstock_crawl/telegram_alert.py "LINUX END"
+    python3 -u /workspace/jazzstock_crawl/linux/04.alerting.py
+    # python3 -u /workspace/jazzstock_crawl/telegram_alert.py "LINUX END"
     
 fi
