@@ -30,6 +30,7 @@ class jazzstock_monitoring:
                       'T_STOCK_MC',
                       'T_STOCK_BB_EVENT',
                       'T_STOCK_DAY_SMAR',
+                      'T_STOCK_TEXT',
                       'T_STOCK_SND_ANALYSIS_RESULT_TEMP',
                       'T_STOCK_SND_ANALYSIS_LONGTERM']
         # 'T_STOCK_OHLC_MIN']

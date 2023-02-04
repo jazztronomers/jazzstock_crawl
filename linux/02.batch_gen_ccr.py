@@ -2,8 +2,9 @@ import common.connector_db as db
 from datetime import datetime
 
 
-DATE = str(datetime.now().date())
 
+DATE = str(datetime.now().date())
+# DATE = "2022-04-22"
 df = db.selectpd('''
 
 

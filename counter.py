@@ -2,7 +2,13 @@ import common.connector_db as db
 import sys
 from datetime import datetime
 
-the_date = str(datetime.now().date())
+
+
+if len(sys.argv) == 3:
+    the_date = str(sys.argv[2])
+
+else:
+    the_date = str(datetime.now().date())
 
 
 
@@ -20,7 +26,7 @@ else:
     what = str(sys.argv[1])
 
     
-print(command_key, the_date)
+# print(command_key, the_date)
 
 command_dic = {'snd_day':'SELECT DISTINCT STOCKCODE FROM jazzdb.T_STOCK_SND_DAY WHERE DATE = "%s"'%(the_date),
        'ohlc_min':'SELECT DISTINCT STOCKCODE FROM jazzdb.T_STOCK_OHLC_MIN WHERE DATE = "%s"'%(the_date),

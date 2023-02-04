@@ -50,6 +50,7 @@ def crawl_stake_info(code):
         return querylist
 
     except Exception as e:
+        print(code, e)
         return []
         # db.insert(query)
 
@@ -113,6 +114,25 @@ def get_stockcode_to_crawl():
 
     return db.selectSingleColumn(query)
 
+def get_stockcode_to_crawl_shares():
+
+    query = """
+
+                        SELECT A.STOCKCODE
+                        FROM jazzdb.T_STOCK_CODE_MGMT A
+                        WHERE 1=1
+                        AND A.STOCKCODE NOT IN (
+
+                            SELECT STOCKCODE
+                            FROM jazzdb.T_STOCK_SHARES_INFO
+                            WHERE DATE = '%s'
+                            GROUP BY STOCKCODE
+                        )
+                        AND A.LISTED = 1
+                                                        """ % (today)
+
+    return db.selectSingleColumn(query)
+
 
 if __name__ == '__main__':
     
@@ -122,11 +142,49 @@ if __name__ == '__main__':
     for i, stockcode in enumerate(stockcodes):
         
         
-        print(i, stockcode)
+        print(0, i, stockcode)
+       
+        try: 
+            query_to_execute = []
+            query_to_execute = query_to_execute + crawl_ohlc(stockcode)
+            time.sleep(0.3)
+            query_to_execute = query_to_execute + crawl_stake_info(stockcode)
+       
+        except Exception as e:
+            
+            print("ERROR: %s"%(e))
+            time.sleep(0.5)
+            query_to_execute = []
+            query_to_execute = query_to_execute + crawl_ohlc(stockcode)
+            time.sleep(0.3)
+            query_to_execute = query_to_execute + crawl_stake_info(stockcode)
         
-        query_to_execute = []
-        query_to_execute = query_to_execute + crawl_ohlc(stockcode)
-        query_to_execute = query_to_execute + crawl_stake_info(stockcode)
+        for j, each_query in enumerate(query_to_execute):
+            try:
+                db.insert(each_query)
+            except Exception as e:
+                print(i, stockcode, j, e, each_query)
+	
+        
+        time.sleep(0.2)
+        
+    stockcodes = get_stockcode_to_crawl_shares()
+    # stockcodes = ["999999", "079940"]
+    
+    for i, stockcode in enumerate(stockcodes):
+        
+        
+        print(1, i, stockcode)
+        try: 
+            query_to_execute = []
+            query_to_execute = query_to_execute + crawl_stake_info(stockcode)
+
+        except Exception as e:
+
+            print("ERROR: %s"%(e))
+            query_to_execute = []
+            query_to_execute = query_to_execute + crawl_stake_info(stockcode)
+
         
         
         
