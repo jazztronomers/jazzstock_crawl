@@ -104,10 +104,6 @@ class CrawlStockObject:
         self.df_snd_shorterm = self.make_snd_shortterm()
         self.df_snd_longterm_to_be = self.make_snd_longterm_to_be()
         self.df_snd_longterm_as_is = self.make_snd_longterm_as_is()
-
-        print(self.df_snd_longterm_to_be.values)
-        print(self.df_snd_longterm_as_is.values)
-
         self.df_vwap = self.make_vwap()
 
         # INSERT
