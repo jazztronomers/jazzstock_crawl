@@ -83,7 +83,7 @@ class CrawlStockObject:
         self.table_moving_average = "jazzdb.T_STOCK_MA"
         self.table_smar = "jazzdb.T_STOCK_DAY_SMAR"
 
-        self.table_snd_shorterm = "jazzdb.T_STOCK_SND_ANALYSIS_SHORTERM"
+        self.table_snd_shorterm = "jazzdb.T_STOCK_SND_ANALYSIS_RESULT_TEMP"
         self.table_snd_longterm = "jazzdb.T_STOCK_SND_ANALYSIS_LONGTERM"
         self.table_vwap = "jazzdb.T_STOCK_VWAP"
 
@@ -103,10 +103,47 @@ class CrawlStockObject:
         self.df_smar = self.make_smar()
         self.df_snd_shorterm = self.make_snd_shortterm()
         self.df_snd_longterm_to_be = self.make_snd_longterm_to_be()
-        self.df_snd_longterm_as_is = self.make_snd_longterm_as_is()
         self.df_vwap = self.make_vwap()
 
         # INSERT
+
+        self.check_and_insert(self.df_bb, self.table_bb)
+        self.check_and_insert(self.df_bb_event, self.table_bb_event)
+        self.check_and_insert(self.df_future_price, self.table_future_price)
+        self.check_and_insert(self.df_moving_average, self.table_moving_average)
+        self.check_and_insert(self.df_smar, self.table_smar)
+        self.check_and_insert(self.df_snd_shorterm, self.table_snd_shorterm)
+        self.check_and_insert(self.df_snd_longterm_to_be, self.table_snd_longterm)
+        # self.check_and_insert(self.df_vwap, self.table_vwap)
+
+
+
+    def check_and_insert(self, dataframe, target_table, row=1):
+
+        query_to_get_column = """
+        
+        SELECT *
+        FROM %s
+        LIMIT 1
+        
+        """%(target_table)
+
+
+        try:
+            columns = db.selectpd(query_to_get_column).columns
+
+            cnt = 0
+            for col in columns:
+                if col not in dataframe.columns:
+                    cnt +=1
+                    warn("shit %s not in dataframe...%s"%(col, target_table))
+
+            if cnt == 0:
+                info('%s, %s' % (target_table, "validated"))
+        except Exception as e:
+
+
+            warn(e)
 
 
     @check_running_time

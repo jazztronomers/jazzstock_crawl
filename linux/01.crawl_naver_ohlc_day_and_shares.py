@@ -25,11 +25,7 @@ def crawl_stake_info(code):
         # print(df_list[1])
 
         distriPerc = df_list[1].iloc[6][1].split('/')[1]
-
         shares = df_list[1].iloc[6][1].split('/')[0]
-        # for i in range (0,len(df_list[4])):
-        #     if(str(df_list[4].iloc[i][0]) != 'nan'):
-        #         print([df_list[4].iloc[i][0].split('외')[0].strip(),int(round(df_list[4].iloc[i][1]))])
 
         obj = []
         obj.append(["발행주식수",int(shares.replace('주 ','').replace(',',''))])

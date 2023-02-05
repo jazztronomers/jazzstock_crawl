@@ -8,11 +8,9 @@ def analysisSndBasicEachDay(stockcode, tdate):
 
     SELECT cast(DATE AS CHAR) AS DATE, STOCKCODE, CLOSE, VOLUME, FOREI, INS, PER, FINAN,
        SAMO, YG, TUSIN, INSUR, NATION, BANK, OTHERFINAN,
-       OTHERCORPOR, OTHERFOR, CNT, MA3, MA5, MA10, MA20, MA60,
-       MA120, VMA3, VMA5, VMA10, VMA20, VMA60, VMA120
+       OTHERCORPOR, OTHERFOR, CNT
     FROM jazzdb.T_STOCK_SND_DAY A
     JOIN jazzdb.T_DATE_INDEXED B USING (DATE)
-    JOIN jazzdb.T_STOCK_MA USING (STOCKCODE, DATE)
     WHERE 1=1
     AND A.STOCKCODE = '%s'
     AND B.CNT BETWEEN 0 AND 500
@@ -96,7 +94,7 @@ def analysisSndBasicEachDay(stockcode, tdate):
                      'T3', 'T5', 'T20', 'T60', 'IS1', 'IS3', 'IS5', 'IS20', 'IS60', 'NT1',
                      'NT3', 'NT5', 'NT20', 'NT60', 'BK1', 'BK3', 'BK5', 'BK20', 'BK60',
                      'OC1', 'OC3', 'OC5', 'OC20', 'OC60', 'IR', 'FR', 'PR', 'FNR', 'YR',
-                     'SR', 'TR', 'ISR', 'NTR', 'BKR', 'OCR', 'V3', 'V5', 'V20', 'V60']].tail(1),
+                     'SR', 'TR', 'ISR', 'NTR', 'BKR', 'OCR']].tail(1),
                 'jazzdb.T_STOCK_SND_ANALYSIS_RESULT_TEMP')
 
 
