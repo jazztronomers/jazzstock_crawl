@@ -237,25 +237,25 @@ class CrawlStockObject:
         result_df.loc[0, 'STOCKCODE'] = self.stockcode
         result_df.loc[0, 'DATE'] = self.today
 
-        result_df.loc[0, 'DIR_L1'] = '%s' % (prev_event_list[-1])
-        result_df.loc[0, 'DIR_L2'] = '%s' % (prev_event_list[-2])
-        result_df.loc[0, 'DIR_L3'] = '%s' % (prev_event_list[-3])
-        result_df.loc[0, 'DIR_L4'] = '%s' % (prev_event_list[-4])
+        result_df.loc[0, 'L1BE'] = '%s' % (prev_event_list[-1])
+        result_df.loc[0, 'L2BE'] = '%s' % (prev_event_list[-2])
+        result_df.loc[0, 'L3BE'] = '%s' % (prev_event_list[-3])
+        result_df.loc[0, 'L4BE'] = '%s' % (prev_event_list[-4])
 
-        result_df.loc[0, 'DAYS_L1'] = int(59 - interval_list[-1])
-        result_df.loc[0, 'DAYS_L2'] = int(59 - interval_list[-2])
-        result_df.loc[0, 'DAYS_L3'] = int(59 - interval_list[-3])
-        result_df.loc[0, 'DAYS_L4'] = int(59 - interval_list[-4])
+        result_df.loc[0, 'L1ED'] = int(59 - interval_list[-1])
+        result_df.loc[0, 'L2ED'] = int(59 - interval_list[-2])
+        result_df.loc[0, 'L3ED'] = int(59 - interval_list[-3])
+        result_df.loc[0, 'L4ED'] = int(59 - interval_list[-4])
 
-        result_df.loc[0, 'BBW_L1'] = round(bbw_list[-1], 3)
-        result_df.loc[0, 'BBW_L2'] = round(bbw_list[-2], 3)
-        result_df.loc[0, 'BBW_L3'] = round(bbw_list[-3], 3)
-        result_df.loc[0, 'BBW_L4'] = round(bbw_list[-4], 3)
+        result_df.loc[0, 'L1BW'] = round(bbw_list[-1], 3)
+        result_df.loc[0, 'L2BW'] = round(bbw_list[-2], 3)
+        result_df.loc[0, 'L3BW'] = round(bbw_list[-3], 3)
+        result_df.loc[0, 'L4BW'] = round(bbw_list[-4], 3)
 
-        result_df.loc[0, 'BBP_L1'] = round(bbp_list[-1], 3)
-        result_df.loc[0, 'BBP_L2'] = round(bbp_list[-2], 3)
-        result_df.loc[0, 'BBP_L3'] = round(bbp_list[-3], 3)
-        result_df.loc[0, 'BBP_L4'] = round(bbp_list[-4], 3)
+        result_df.loc[0, 'L1BP'] = round(bbp_list[-1], 3)
+        result_df.loc[0, 'L2BP'] = round(bbp_list[-2], 3)
+        result_df.loc[0, 'L3BP'] = round(bbp_list[-3], 3)
+        result_df.loc[0, 'L4BP'] = round(bbp_list[-4], 3)
 
 
         return result_df
